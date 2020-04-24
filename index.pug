@@ -1,0 +1,73 @@
+extends partial/layout
+
+block content
+  
+  .mdui-appbar.mdui-appbar-fixed.mdui-appbar-scroll-toolbar-hide
+    .mdui-toolbar.mdui-color-theme
+      -if(parent)
+        a.mdui-btn.mdui-btn-icon.mdui-ripple(href=parent)
+          i.mdui-icon.material-icons arrow_back
+      a.mdui-typo-headline.mdui-ripple(href='/',style={})= _config_('title')
+      .mdui-toolbar-spacer
+      -if(writeable)
+        a.mdui-btn.mdui-btn-icon.mdui-ripple
+          i.mdui-icon.material-icons create_new_folder
+          input(type="file",multiple="",webkitdirectory="",directory="",name="file",style={opacity: 0})
+        a.mdui-btn.mdui-btn-icon.mdui-ripple
+          i.mdui-icon.material-icons cloud_upload
+          input(type="file",multiple="",name="file",style={opacity: 0})
+  .mdui-container
+    
+    section.wrap
+      .list-header
+        .mdui-row
+          .mdui-col-md-7.mdui-col-sm-6.mdui-col-xs-8= __('filename')
+          .mdui-col-md-2.mdui-col-sm-2.mdui-col-xs-4.mdui-text-right= __('size')
+          .mdui-col-md-3.mdui-col-sm-4.mdui-hidden-xs.mdui-text-right= __('last_modified')
+      ul.mdui-list
+        each i in data
+          li.mdui-list-item.mdui-ripple
+            i.mdui-list-item-icon.ic.mdui-icon.ic(class='ic-'+i.type)
+            a.clearfix.mdui-list-item-content(href=i.href , target=i.type == 'folder' ? '' : '_blank')
+              .mdui-row
+                span.file-name.mdui-col-md-7.mdui-col-sm-6.mdui-col-xs-8
+                  //- i.ic(class='ic-'+i.type)
+                  | #{i.name}
+                span.file-size.mdui-col-md-2.mdui-col-sm-2.mdui-col-xs-4.mdui-text-right
+                  | #{i.size}
+                span.file-modified.mdui-col-md-3.mdui-col-sm-4.mdui-hidden-xs.mdui-text-right
+                  | #{i.updated_at}
+    //- section.wrap
+    //-   .list-header
+    //-     .row
+    //-       .col-md-7.col-sm-6.col-xs-8= __('filename')
+    //-       .col-md-2.col-sm-2.col-xs-4.text-right= __('size')
+    //-       .col-md-3.col-sm-4.hidden-xs.text-right= __('last_modified')
+    //-   ul.list
+    //-     each i in data
+    //-       li
+    //-         a.clearfix(href=i.href , target=i.type == 'folder' ? '' : '_blank')
+    //-           .row
+    //-             span.file-name.col-md-7.col-sm-6.col-xs-8
+    //-               i.ic(class='ic-'+i.type)
+    //-               | #{i.name}
+    //-             span.file-size.col-md-2.col-sm-2.col-xs-4.text-right
+    //-               | #{i.size}
+    //-             span.file-modified.col-md-3.col-sm-4.hidden-xs.text-right
+    //-               | #{i.updated_at}
+    -if(readme)
+      .mdui-card
+        link(rel='stylesheet', type='text/css', href='https://cdn.bootcss.com/github-markdown-css/3.0.1/github-markdown.min.css')
+        section.wrap(style="margin-top:64px;border-top:1px solid #eee;")
+          article.markdown-body(style="padding:32px;")
+            | !{readme}
+    -if(writeable)
+      script(src='https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js')
+      script(src='/script/upload.js')
+    include partial/footer
+
+
+
+  
+
+  

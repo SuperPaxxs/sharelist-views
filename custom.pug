@@ -1,0 +1,13 @@
+extends partial/layout
+
+block content
+  include partial/message
+  
+  .mdui-appbar.mdui-appbar-fixed.mdui-appbar-scroll-toolbar-hide
+    .mdui-toolbar.mdui-color-theme
+      a.mdui-typo-headline.mdui-ripple(href='/')= _config_('title')
+
+  section.wrap
+    div!= body
+
+  include partial/footer

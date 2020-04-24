@@ -1,0 +1,73 @@
+extends partial/layout
+
+block content
+  include partial/message
+
+  .mdui-appbar.mdui-appbar-fixed.mdui-appbar-scroll-toolbar-hide
+    .mdui-toolbar.mdui-color-theme
+      -if(parent)
+        a.mdui-btn.mdui-btn-icon(href=parent)
+          i.mdui-icon.material-icons arrow_back
+      a.mdui-typo-headline.mdui-ripple(href='/')= _config_('title')
+
+  section.wrap.auth
+    .mdui-typo-display-2.mdui-text-capitalize #{name}
+      //- h3 #{name}
+    div
+      .form-group
+        .mdui-textfield.mdui-textfield-floating-label
+          label.mdui-textfield-label=__('auth_user_placeholder')
+          input.mdui-textfield-input(id="j_user",type='text', name='user')
+        .mdui-textfield.mdui-textfield-floating-label
+          label.mdui-textfield-label=__('auth_passwd_placeholder')
+          input.mdui-textfield-input(id="j_passwd",type='password', name='passwd')
+      button.mdui-btn.mdui-btn-raised.mdui-ripple.mdui-color-theme-accent(type="button")= __('ok')
+
+  script(src='https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js')
+  
+  script.
+    function checkAuth(){
+      let passwd = $('#j_passwd').val(), user = $('#j_user').val() , path = location.pathname
+      $('button').addClass('loading')
+      $.ajax({
+        url:'', dataType:'json', method:'POST',
+        data:{ act:'auth' , path : path , user:user , passwd : passwd },
+        success:function(resp){
+          $('button').removeClass('loading')
+          if(resp.status == 0){
+            location.reload()
+          }else{
+            alert(resp.message)
+          }
+        },
+        error:function(resp){
+          $('button').removeClass('loading')
+
+        }
+      })
+    }
+    $(function(){
+      $('#j_passwd').on('keypress' , function(e){
+        if(e.keyCode == "13"){
+          checkAuth()
+        }
+      })
+      $('button').on('click' , function(){
+        checkAuth()
+      })
+
+      var item
+      if($('.item').length){
+        item = $('.item:first').clone()
+        item.find('input').val('')
+      }
+      $('body').on('click','.create-path' , function(){
+        $('.group-path').append( item.clone() )
+      })
+      .on('click' ,'.remove-path' , function(){
+        $(this).parents('.item').remove()
+      })
+    })
+      
+
+  include partial/footer

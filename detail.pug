@@ -1,0 +1,21 @@
+extends partial/layout
+
+block content
+  .mdui-appbar.mdui-appbar-fixed.mdui-appbar-scroll-toolbar-hide
+    .mdui-toolbar.mdui-color-theme
+      a.mdui-typo-headline #{data.name}
+      .mdui-toolbar-spacer
+      a.mdui-btn.mdui-btn-icon.mdui-ripple(href=url)
+        i.mdui-icon.material-icons file_download
+  //- header
+  //-   .wrap.detail
+  //-     a.home #{data.name}
+  //-     a.download-menu(href=url)
+  //-       i.ic.ic-download
+  section.wrap
+    .detail.mdui-card
+      -if(data.body)
+        | !{data.body}
+      -else
+        p= __('unable_to_preview')   
+  include partial/footer
